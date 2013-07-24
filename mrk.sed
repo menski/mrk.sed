@@ -1,16 +1,16 @@
 #!/bin/sed -nf
 
-# if empty line handle paragraph
+# if empty line handle block
 /^\s*$/ {
-  b para
+  b block
 }
 
 # put first line into the hold buffer
 1h
 # else append to hold buffer
 1!H
-# if last line handle paragraph
-$ b para
+# if last line handle block
+$ b block
 # else continue with next line
 b
 
@@ -36,8 +36,8 @@ b
   s!\[\([^]]\+\)\]!<img src="\1"/>!
   b markup
 
-# handle paragraph
-:para
+# handle block
+:block
   # get hold buffer
   x
   # if hold buffer empty skip
@@ -80,5 +80,5 @@ b
   x
   # print former hold buffer
   p
-  # if last line parse paragraph
-  $ b para
+  # if last line parse block
+  $ b block
