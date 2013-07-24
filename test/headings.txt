@@ -1,0 +1,31 @@
+
+=
+Head 1
+=
+
+= Head 2
+
+= Head 3 =
+
+Head 4
+======
+
+Head 5
+===
+
+Head 6
+========
+
+==Head 7
+
+==Head 8==
+
+Head 9
+------
+
+ === Head 10
+
+ === Head 11   ===
+
+Head 12
+~~~~~~~
