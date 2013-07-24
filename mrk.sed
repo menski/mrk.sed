@@ -1,3 +1,5 @@
+#!/bin/sed -nf
+
 # if empty line handle paragraph
 /^\s*$/ {
   b para
@@ -53,6 +55,16 @@ b
   /^\s*=/ b heading_starting
   # found heading underlined = - ~
   /\n\s*\(===\+\|---\+\|~~~\+\)/ b heading_underline
+  # transform bold
+  s!\*\([^\*]*\)\*!<b>\1</b>!g
+  # transform italic
+  s!\~\([^\~]*\)\~!<i>\1</i>!g
+  # transform monospace
+  s!\$\([^\$]*\)\$!<code>\1</code>!g
+  # transform underline
+  s!_\([^_]*\)_!<u>\1</u>!g
+  # transform strikeout
+  s!-\([^-]*\)-!<del>\1</del>!g
   p
   # quit if last line
   $ q
@@ -62,3 +74,5 @@ b
   x
   # print former hold buffer
   p
+  # if last line parse paragraph
+  $ b para
