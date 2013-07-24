@@ -32,6 +32,10 @@ b
   # continue processing markup
   b markup
 
+:image
+  s!\[\([^]]\+\)\]!<img src="\1"/>!
+  b markup
+
 # handle paragraph
 :para
   # get hold buffer
@@ -51,9 +55,9 @@ b
   b markup
 
 :markup
-  # found heading starting with =
+  # transform heading starting with =
   /^\s*=/ b heading_starting
-  # found heading underlined = - ~
+  # transform heading underlined = - ~
   /\n\s*\(===\+\|---\+\|~~~\+\)/ b heading_underline
   # transform bold
   s!\*\([^\*]*\)\*!<b>\1</b>!g
@@ -65,6 +69,8 @@ b
   s!_\([^_]*\)_!<u>\1</u>!g
   # transform strikeout
   s!-\([^-]*\)-!<del>\1</del>!g
+  # transform images
+  /\[[^]]\+.\(png\|jpg\|jpeg\|gif\)\]/I b image
   p
   # quit if last line
   $ q
