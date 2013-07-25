@@ -46,4 +46,5 @@ mrk supports two styles of headers:
 
     http://anonymous.link
     [Named Link http://named.link]
-
+    [InternalLink]
+    [#Label]
