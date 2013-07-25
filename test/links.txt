@@ -1,4 +1,4 @@
-[http://www.google.de]
+http://www.google.de
 
 [Google http://www.google.de]
 

@@ -74,8 +74,8 @@ b
   # transform images
   /\[[^]]\+.\(png\|jpg\|jpeg\|gif\)\]/I b image
   # transform link
-  s!\[\(\w\+://\S\+\)\]!<a href="\1">\1</a>!g
   s!\[\(.\+\)\s\(\w\+://\S\+\)\]!<a href="\2">\1</a>!g
+  s!\(^\|\s\)\(\w\+://\S\+\)\($\|\s\)!<a href="\2">\2</a>!g
   p
   # quit if last line
   $ q
