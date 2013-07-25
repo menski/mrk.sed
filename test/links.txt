@@ -3,3 +3,11 @@ http://www.google.de
 [Google http://www.google.de]
 
 [Long text link to ftp ftp://lol.lol/lol.tar.gz]
+
+This is a reference [#ref1] ...
+
+... and this is an internal link [ref2]
+
+You can also put the label on the next line
+[#ref2] and the link also on the next line
+[ref1]
