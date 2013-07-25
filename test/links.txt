@@ -1,0 +1,5 @@
+[http://www.google.de]
+
+[Google http://www.google.de]
+
+[Long text link to ftp ftp://lol.lol/lol.tar.gz]

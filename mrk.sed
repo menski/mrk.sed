@@ -36,6 +36,8 @@ b
   s!\[\([^]]\+\)\]!<img src="\1"/>!
   b markup
 
+:link
+
 # handle block
 :block
   # get hold buffer
@@ -71,6 +73,9 @@ b
   s!-\([^-]*\)-!<del>\1</del>!g
   # transform images
   /\[[^]]\+.\(png\|jpg\|jpeg\|gif\)\]/I b image
+  # transform link
+  s!\[\(\w\+://\S\+\)\]!<a href="\1">\1</a>!g
+  s!\[\(.\+\)\s\(\w\+://\S\+\)\]!<a href="\2">\1</a>!g
   p
   # quit if last line
   $ q
