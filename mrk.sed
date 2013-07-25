@@ -76,6 +76,11 @@ b
   # transform link
   s!\[\(.\+\)\s\(\w\+://\S\+\)\]!<a href="\2">\1</a>!g
   s!\(^\|\s\)\(\w\+://\S\+\)\($\|\s\)!<a href="\2">\2</a>!g
+  # add paragraph tag if not a header
+  /^\s*<h/ !{
+    i <p>
+    a </p>
+  }
   p
   # quit if last line
   $ q
