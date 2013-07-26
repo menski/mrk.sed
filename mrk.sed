@@ -36,7 +36,61 @@ b
   s!\[\([^]]\+\)\]!<img src="\1"/>!
   b markup
 
-:link
+:enumerate
+  # remove line break for multi line items
+  s!\n\s*\([^ 0-9]\)! \1!g
+  # replace leading spaces by count
+  s!\(^\|\n\)\([0-9]\)!\10 \2!g
+  s!\(^\|\n\) \{2\}\([0-9]\)!\12 \2!g
+  s!\(^\|\n\) \{4\}\([0-9]\)!\14 \2!g
+  s!\(^\|\n\) \{6\}\([0-9]\)!\16 \2!g
+  s!\(^\|\n\) \{8\}\([0-9]\)!\18 \2!g
+  # add opening ol tags
+  s!\(^\|\n\)\(0 [^\n]\+\)\(\n2 \)!\1\2\n<ol>\3!g
+  s!\(^\|\n\)\(2 [^\n]\+\)\(\n4 \)!\1\2\n<ol>\3!g
+  s!\(^\|\n\)\(4 [^\n]\+\)\(\n6 \)!\1\2\n<ol>\3!g
+  s!\(^\|\n\)\(6 [^\n]\+\)\(\n8 \)!\1\2\n<ol>\3!g
+  # add closing ol tags
+  s!\(^\|\n\)\(8 [^\n]\+\)\(\n6 \)!\1\2\n</ol>\3!g
+  s!\(^\|\n\)\(8 [^\n]\+\)\(\n4 \)!\1\2\n</ol>\n</ol>\3!g
+  s!\(^\|\n\)\(8 [^\n]\+\)\(\n2 \)!\1\2\n</ol>\n</ol>\n</ol>\3!g
+  s!\(^\|\n\)\(8 [^\n]\+\)\(\n0 \)!\1\2\n</ol>\n</ol>\n</ol>\n</ol>\3!g
+  s!\(^\|\n\)\(4 [^\n]\+\)\(\n2 \)!\1\2\n</ol>\3!g
+  s!\(^\|\n\)\(4 [^\n]\+\)\(\n0 \)!\1\2\n</ol>\n</ol>\3!g
+  s!\(^\|\n\)\(2 [^\n]\+\)\(\n0 \)!\1\2\n</ol>\3!g
+  # surround with li elements
+  s!\(^\|\n\)[0-8] [0-9]\+\.\s*\([^\n]\+\)!\1<li>\2</li>!g
+  # surround whole list with ol tags
+  s!^\(.*\)$!<ol>\n\1\n</ol>!
+  b markup
+
+:itemize
+  # remove line break for multi line items
+  s!\n\s*\([^- ]\)! \1!g
+  # replace leading spaces by count
+  s!\(^\|\n\)-!\10-!g
+  s!\(^\|\n\) \{2\}-!\12-!g
+  s!\(^\|\n\) \{4\}-!\14-!g
+  s!\(^\|\n\) \{6\}-!\16-!g
+  s!\(^\|\n\) \{8\}-!\18-!g
+  # add opening ul tags
+  s!\(^\|\n\)\(0-[^\n]\+\)\(\n2-\)!\1\2\n<ul>\3!g
+  s!\(^\|\n\)\(2-[^\n]\+\)\(\n4-\)!\1\2\n<ul>\3!g
+  s!\(^\|\n\)\(4-[^\n]\+\)\(\n6-\)!\1\2\n<ul>\3!g
+  s!\(^\|\n\)\(6-[^\n]\+\)\(\n8-\)!\1\2\n<ul>\3!g
+  # add closing ul tags
+  s!\(^\|\n\)\(8-[^\n]\+\)\(\n6-\)!\1\2\n</ul>\3!g
+  s!\(^\|\n\)\(8-[^\n]\+\)\(\n4-\)!\1\2\n</ul>\n</ul>\3!g
+  s!\(^\|\n\)\(8-[^\n]\+\)\(\n2-\)!\1\2\n</ul>\n</ul>\n</ul>\3!g
+  s!\(^\|\n\)\(8-[^\n]\+\)\(\n0-\)!\1\2\n</ul>\n</ul>\n</ul>\n</ul>\3!g
+  s!\(^\|\n\)\(4-[^\n]\+\)\(\n2-\)!\1\2\n</ul>\3!g
+  s!\(^\|\n\)\(4-[^\n]\+\)\(\n0-\)!\1\2\n</ul>\n</ul>\3!g
+  s!\(^\|\n\)\(2-[^\n]\+\)\(\n0-\)!\1\2\n</ul>\3!g
+  # surround with li elements
+  s!\(^\|\n\)[0-8]-\s*\([^\n]\+\)!\1<li>\2</li>!g
+  # surround whole list with ul tags
+  s!^\(.*\)$!<ul>\n\1\n</ul>!
+  b markup
 
 # handle block
 :block
@@ -70,7 +124,7 @@ b
   # transform underline
   s!_\([^_]*\)_!<u>\1</u>!g
   # transform strikeout
-  s!-\([^-]*\)-!<del>\1</del>!g
+  s!-\(\S[^-]*\)-!<del>\1</del>!g
   # transform images
   /\[[^]]\+.\(png\|jpg\|jpeg\|gif\)\]/I b image
   # transform link
@@ -78,8 +132,12 @@ b
   s!\(^\|\s\)\(\w\+://\S\+\)\($\|\s\)!<a href="\2">\2</a>!g
   s!\(\S\+\)\s\[\#\([^]]\+\)\]!<a id="\2">\1</a>!g
   s!\(\S\+\)\s\[\([^]]\+\)\]!<a href="#\2">\1</a>!g
+  # transform list
+  /^[0-9]\+\.\s/ b enumerate
+  /^-\s/ b itemize
+
   # add paragraph tag if not a header
-  /^\s*<h/ !{
+  /^\s*<\(h\|ol\|ul\)/ !{
     i <p>
     a </p>
   }
